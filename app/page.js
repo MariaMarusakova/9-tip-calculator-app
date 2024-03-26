@@ -7,7 +7,7 @@ import { DevTool } from '@hookform/devtools'
 
 export default function Home() {
 
-  const { control, register, onChange, getValues, watch, handleSubmit, formState } = useForm();
+  const { control, register, onChange, getValues, watch, handleSubmit, formState, reset } = useForm();
   const [bill, setBill] = useState(0);
   const [tip, setTip] = useState(0);
   const [total, setTotal] = useState(0);
@@ -19,17 +19,21 @@ export default function Home() {
     console.log("----------------------------------------------");
     const billAmount = enteredValues.bill;
     const numberOfPeopleEntered = enteredValues.numberOfPeople;
-    const percentage = e.target.id;
+    const enteredPercentage = enteredValues.customValue;
+    const percentage = (enteredPercentage==null) ? e.target.id : enteredPercentage;
     const calulatedTip = Number(billAmount) * Number(percentage / 100);
     const calulatedTipPerPerson = calulatedTip / numberOfPeopleEntered;
     const calculatedFullBill = Number(calulatedTip) + Number(billAmount);
     const billPerPerson = calculatedFullBill / Number(numberOfPeopleEntered);
-    setTotal(billPerPerson.toFixed(2));
-    setTip(calulatedTipPerPerson.toFixed(2));
-
+    if  (numberOfPeopleEntered!=0 && percentage!=0 && billAmount!=0) {
+      setTotal(billPerPerson.toFixed(2));      
+      setTip(calulatedTipPerPerson.toFixed(2));} else {
+      setTotal(0);
+      setTip(0);}
+  
     console.log("billAmount: ", billAmount);
     console.log("numberOfPeopleEntered: ", numberOfPeopleEntered);
-    console.log("percentage: ", percentage);
+    console.log("percentage: ", enteredPercentage);
     console.log("calulatedTip: ", calulatedTip);
     console.log("calulatedTipPerPerson: ", calulatedTipPerPerson);
     console.log("calculatedFullBill: ", calculatedFullBill);
@@ -78,7 +82,8 @@ export default function Home() {
                 <button className="md:w-28 h-10 bg-very-dark-cyan text-very-light-grayish-cyan rounded-lg text-2xl hover:bg-strong-cyan hover:text-dark-grayish-cyan" id="15" onClick={(e) => submitWithPercent(e)}>15%</button>
                 <button className="md:w-28 h-10 bg-very-dark-cyan text-very-light-grayish-cyan rounded-lg text-2xl hover:bg-strong-cyan hover:text-dark-grayish-cyan" id="25" onClick={(e) => submitWithPercent(e)}>25%</button>
                 <button className="md:w-28 h-10 bg-very-dark-cyan text-very-light-grayish-cyan rounded-lg text-2xl hover:bg-strong-cyan hover:text-dark-grayish-cyan" id="50" onClick={(e) => submitWithPercent(e)}>50%</button>
-                <input className="md:w-28 h-10 bg-very-dark-cyan text-very-light-grayish-cyan rounded-lg text-xl text-center" defaultValue={"Custom"} id="customValue" {...register("customValue", { onChange: (e) => submitWithPercent(e) })}></input>
+                <input className="md:w-28 h-10 bg-very-dark-cyan text-very-light-grayish-cyan rounded-lg text-xl text-center" placeholder={"Custom"} 
+                name="customValue" {...register("customValue", { onChange: (e) => submitWithPercent(e) })}></input>
               </div>
             </div>
 
@@ -98,8 +103,6 @@ export default function Home() {
 
           </div>
         </form>
-        <DevTool control={control} /> {/* set up the dev tool */}
-
 
         <div className="bg-very-dark-cyan md:w-[420px] md:m-10 rounded-3xl p-10">
           <div>
@@ -125,7 +128,7 @@ export default function Home() {
 
           </div>
           <button className="md:w-[23rem] h-10 bg-strong-cyan text-very-dark-cyan rounded-lg text-2xl -ml-3 mt-32
-                hover:bg-light-grayish-cyan" onClick={(e) => submitWithPercent(e)}>RESET</button>
+                hover:bg-light-grayish-cyan" onClick={() => {reset();setTotal(0);setTip(0)}}>RESET</button>
         </div>
 
       </div>
