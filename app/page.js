@@ -20,7 +20,7 @@ export default function Home() {
     const billAmount = enteredValues.bill;
     const numberOfPeopleEntered = enteredValues.numberOfPeople;
     const enteredPercentage = enteredValues.customValue;
-    const percentage = (enteredPercentage==null) ? e.target.id : enteredPercentage;
+    const percentage = (enteredPercentage==null ||enteredPercentage=='') ? e.target.id : enteredPercentage;
     const calulatedTip = Number(billAmount) * Number(percentage / 100);
     const calulatedTipPerPerson = calulatedTip / numberOfPeopleEntered;
     const calculatedFullBill = Number(calulatedTip) + Number(billAmount);
@@ -33,7 +33,7 @@ export default function Home() {
   
     console.log("billAmount: ", billAmount);
     console.log("numberOfPeopleEntered: ", numberOfPeopleEntered);
-    console.log("percentage: ", enteredPercentage);
+    console.log("percentage: ", percentage);
     console.log("calulatedTip: ", calulatedTip);
     console.log("calulatedTipPerPerson: ", calulatedTipPerPerson);
     console.log("calculatedFullBill: ", calculatedFullBill);
@@ -104,14 +104,14 @@ export default function Home() {
           </div>
         </form>
 
-        <div className="bg-very-dark-cyan md:w-[420px] md:m-10 rounded-3xl p-10">
+        <div className="bg-very-dark-cyan md:w-[420px] md:m-10 rounded-3xl p-10 m-4">
           <div>
           <div className="flex mb-9">    
             <div className="w-36">
             <p className="text-sm text-white">Tip Amount</p>
             <p className="text-xs text-grayish-cyan">/ person</p>
             </div>    
-            <div className="text-4xl text-strong-cyan text-right w-40 ml-28">
+            <div className="md:text-4xl text-3xl text-strong-cyan text-right w-40 md:ml-28">
             <p >${tip}</p>
             </div>
           </div>
@@ -121,13 +121,13 @@ export default function Home() {
             <p className="text-sm text-white">Total</p>
             <p className="text-xs text-grayish-cyan">/ person</p>
             </div>    
-            <div className="text-4xl text-strong-cyan text-right w-40 ml-28">
+            <div className="md:text-4xl text-3xl text-strong-cyan text-right w-40 md:ml-28">
             <p >${total}</p>
             </div>
           </div>
 
           </div>
-          <button className="md:w-[23rem] h-10 bg-strong-cyan text-very-dark-cyan rounded-lg text-2xl -ml-3 mt-32
+          <button className="md:w-[23rem] w-64 h-10 bg-strong-cyan text-very-dark-cyan rounded-lg text-2xl -ml-3 mt-32
                 hover:bg-light-grayish-cyan" onClick={() => {reset();setTotal(0);setTip(0)}}>RESET</button>
         </div>
 
